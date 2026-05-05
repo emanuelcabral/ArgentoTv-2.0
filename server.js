@@ -18,7 +18,7 @@ let lastUpdate = 0;
 const CACHE_TIME = 1000 * 60 * 30;
 
 const feeds = [
-  { url: "https://argentotv.up.railway.app/epg", tag: "AR" }
+  { url: "https://iptv-epg.org/files/epg-ar.xml", tag: "AR" }
 ];
 
 // ⏱ FETCH CON TIMEOUT
