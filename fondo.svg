@@ -1,0 +1,44 @@
+<svg width="900" height="520" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <!-- Fondo oscuro teal -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#061a23"/>
+      <stop offset="100%" stop-color="#0b3b46"/>
+    </linearGradient>
+
+    <!-- Blobs -->
+    <radialGradient id="blob1" cx="30%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="#19f0d8"/>
+      <stop offset="100%" stop-color="#19f0d8" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="blob2" cx="70%" cy="60%" r="50%">
+      <stop offset="0%" stop-color="#0bbcd6"/>
+      <stop offset="100%" stop-color="#0bbcd6" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Blur -->
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="40"/>
+    </filter>
+  </defs>
+
+  <!-- Fondo -->
+  <rect width="900" height="520" fill="url(#bg)"/>
+
+  <!-- Blobs suaves -->
+  <circle cx="250" cy="180" r="200" fill="url(#blob1)" filter="url(#blur)"/>
+  <circle cx="700" cy="350" r="220" fill="url(#blob2)" filter="url(#blur)"/>
+
+  <!-- Grilla sutil -->
+  <g stroke="white" stroke-opacity="0.05">
+    <path d="M0 80 H900 M0 160 H900 M0 240 H900 M0 320 H900 M0 400 H900"/>
+    <path d="M100 0 V520 M200 0 V520 M300 0 V520 M400 0 V520 M500 0 V520"/>
+  </g>
+
+  <!-- Detalles mínimos -->
+  <circle cx="750" cy="100" r="4" fill="#19f0d8"/>
+  <circle cx="120" cy="400" r="3" fill="#0bbcd6"/>
+
+</svg>

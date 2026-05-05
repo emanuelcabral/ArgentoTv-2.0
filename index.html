@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ArgentoTV</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico">
+</head>
+
+<body>
+
+<div id="intro-overlay">
+  <img src="logo.png" id="intro-logo">
+</div>
+
+  <header>
+    <h1>📺 ArgentoTV</h1>
+    <input type="text" id="search" placeholder="Buscar canal...">
+  </header>
+
+  <main>
+
+    <!-- LISTA DE CANALES -->
+    <div id="channel-list"></div>
+
+    <!-- PLAYER -->
+    <div id="player-container">
+      <div id="hora"></div>
+      <!-- 🔥 VIDEO SIN CONTROLES NATIVOS -->
+      <video id="video" autoplay></video>
+
+      <!-- datos fijos inicia -->
+       <div id="hud">
+        <span id="hud-resolution">--</span>|
+        <span id="hud-bitrate">--</span>|
+        <span id="hud-mode">--</span>|
+        <span id="hud-speed">--</span>|
+        <span id="hud-quality">--</span>
+      </div>
+      <!-- datos fijos fin -->
+
+      <!-- prealoader inicia -->
+       <div id="preloader">
+        <div class="loader-box">
+
+          <div class="spinner"></div>
+
+          <div class="loader-text">Cargando canal...</div>
+
+          <div id="speed">0 KB/s</div>
+
+        </div>
+      </div>
+      <!-- prealoader fin -->
+
+      <!-- 🔥 OVERLAY (INFO CANAL + CONTROLES) -->
+      <div id="overlay">
+        <div class="overlay-content">
+          <img id="overlay-logo">
+
+          <div class="overlay-text">
+            <!-- Nombre del canal -->
+            <div id="overlay-name"></div>
+
+            <!-- Bloque EPG (mantengo el ID original y agrego más dentro) -->
+            <div id="overlay-epg">
+              <div id="overlay-title"></div>
+
+              <div id="overlay-time">
+                <span id="overlay-start"></span> - <span id="overlay-stop"></span>
+                <div id="overlay-progress">
+                  <div id="overlay-progress-bar"></div>
+                </div>
+              </div>
+
+              <div id="overlay-category"></div>
+              <div id="overlay-desc"></div>
+
+              <div id="overlay-tech">
+                <span id="overlay-resolution"></span> |
+                <span id="overlay-bitrate"></span> |
+                <span id="overlay-audio"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 🔥 CONTROLES PERSONALIZADOS DENTRO DEL OVERLAY -->
+          <div id="custom-controls">
+            <!-- <button id="play-pause-btn">⏯</button> -->
+
+            <!-- <input 
+              id="volume-slider" 
+              type="range" 
+              min="0" 
+              max="1" 
+              step="0.05" 
+              value="1"
+            > -->
+
+            <button id="fullscreen-btn">⛶</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="hud-controls">
+  <label class="toggle">
+    <input type="checkbox" id="toggle-clock" checked>
+    <span>🕒 Reloj</span>
+  </label>
+
+  <label class="toggle">
+    <input type="checkbox" id="toggle-hud" checked>
+    <span>📊 HUD</span>
+  </label>
+</div>
+
+  </main>
+
+  
+
+  <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+  <script src="player.min.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>

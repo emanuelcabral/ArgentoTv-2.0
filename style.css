@@ -1,0 +1,478 @@
+/* GENERAL */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== SCROLLBAR GLOBAL ===== */
+:root {
+  --scrollbar-bg: rgba(255, 255, 255, 0.05);
+  --scrollbar-thumb: linear-gradient(180deg, #19f0d8, #0bbcd6);
+  --scrollbar-hover: linear-gradient(180deg, #1affea, #0fd1c7);
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #19f0d8 rgba(255,255,255,0.08);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-bg);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(25, 240, 216, 0.5);
+  transition: all 0.3s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+  box-shadow: 0 0 15px rgba(25, 240, 216, 0.8);
+}
+::-webkit-scrollbar-thumb:active {
+  background: #0aa3a3;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-image: url(fondo.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: white;
+}
+
+header {
+  padding: 10px;
+  background: rgba(28, 28, 28, 0.7);
+  height: 100px;
+}
+header h1 {
+  margin: 0;
+  font-size: 1.8em;
+  color: #fff000;
+}
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+}
+
+/* LAYOUT */
+main {
+  display: flex;
+  height: calc(100vh - 200px);
+}
+
+/* LISTA DE CANALES */
+#channel-list {
+  width: 30%;
+  height: calc(100vh - 130px);
+  overflow-y: auto;
+  background: rgba(0, 128, 128, 0.642);
+  backdrop-filter: blur(15px);
+  border-radius: 15px;
+  margin: 15px;
+}
+.channel {
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+  border-bottom: 1px solid #222;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  align-items: flex-start;
+}
+.channel:hover { background: #222; }
+.channel img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: teal;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+/* PLAYER */
+#player-container {
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+  position: relative;
+  border-radius: 15px;
+  margin: 15px;
+}
+video {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+}
+
+/* ------------------------- */
+/* OVERLAY */
+/* ------------------------- */
+#overlay {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9),rgba(0,0,0,0.8),rgba(0,0,0,0.8), transparent);
+  display: flex;
+  justify-content: flex-start;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: 0 0 15px 15px;
+  z-index: 4;
+}
+#overlay.show { opacity: 1; }
+
+.overlay-content {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  width: 100%;
+}
+#overlay-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  background: rgba(0, 128, 128, 0.7);
+  border-radius: 6px;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+}
+.overlay-text {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 4px;
+}
+#overlay-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffd900;
+  text-shadow: 0 0 5px #111;
+}
+
+/* Nuevo bloque EPG */
+#overlay-epg {
+  font-size: 14px;
+  color: #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+#overlay-title {
+  font-size: 25px;
+  font-weight: bold;
+  color: #19f0d8;
+}
+#overlay-time {
+  font-size: 15px;
+  color: #aaa;
+}
+#overlay-progress {
+  width: 100%;
+  height: 6px;
+  background: #444;
+  border-radius: 3px;
+  margin-top: 2px;
+  overflow: hidden;
+}
+#overlay-progress-bar {
+  height: 100%;
+  background: #19f0d8;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+#overlay-category {
+  font-size: 13px;
+  color: #0bbcd6;
+  font-style: italic;
+}
+#overlay-desc {
+  font-size: 18px;
+  color: #ddd;
+  line-height: 1.3;
+}
+#overlay-tech {
+  font-size: 12px;
+  color: #0fd1c7;
+  margin-top: 4px;
+}
+
+/* ------------------------- */
+/* CONTROLES PERSONALIZADOS */
+/* ------------------------- */
+#custom-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto;
+}
+button, input[type="range"] {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+button:focus, input:focus { outline: 2px solid #19f0d8; }
+
+/* FULLSCREEN */
+#fullscreen-btn {
+  font-size: 4em;
+  font-weight: bolds;
+  color: #19f0d8;
+}
+#fullscreen-btn:hover {
+  border: 3px solid #19f0d8;
+  background-color: aquamarine;
+  cursor: pointer !important;
+  z-index: 99999;
+}
+
+/* VOLUMEN */
+input[type="range"] { width: 100px; }
+
+/* Canal enfocado */
+.channel.focused {
+  outline: none;
+  border: 2px solid #19f0d8;
+}
+#fullscreen-btn,
+#play-pause-btn { font-size: 1.2em; }
+#volume-slider { width: 100px; }
+
+#hora{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #1affea;
+  text-shadow: 0 0 15px 10px #222;
+  background-color: rgba(34, 34, 34, 0.703);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* preloader inicia */
+
+#preloader {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, #0a0a0a, #000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+
+  /* 🔥 oculto por defecto */
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 0.4s ease;
+}
+
+/* 🔥 estado visible */
+#preloader.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.loader-box {
+  text-align: center;
+  color: #19f0d8;
+  font-family: Arial;
+}
+
+/* 🔥 SPINNER PREMIUM */
+.spinner {
+  width: 70px;
+  height: 70px;
+  border: 4px solid rgba(25, 240, 216, 0.2);
+  border-top: 4px solid #19f0d8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+  box-shadow: 0 0 20px #19f0d8;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loader-text {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+#speed {
+  font-size: 16px;
+  color: #0fd1c7;
+  text-shadow: 0 0 10px #19f0d8;
+}
+
+/* preloader fin */
+
+/* datos fijos inicia */
+#hud {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #19f0d8;
+  font-family: Arial;
+  display: inline-block;
+  /* flex-direction: column; */
+  gap: 4px;
+  backdrop-filter: blur(8px);
+  z-index: 2;
+  pointer-events: none;
+  min-width: 140px;
+}
+
+#hud div {
+  text-shadow: 0 0 8px rgba(25,240,216,0.4);
+}
+/* datos fijos fin */
+
+/* ocultar hora / info  inicia*/
+
+#hud-controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+  z-index: 99999;
+}
+
+.toggle {
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 6px 10px;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.2s;
+}
+
+.toggle:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+.toggle input {
+  display: none;
+}
+
+/* ocultar hora / info  fin*/
+
+
+
+/* prealoder del home- inicia */
+
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+
+  /* fondo con profundidad */
+  background: radial-gradient(circle at center, #111 0%, #000 60%, #000 100%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+/* fade out elegante */
+#intro-overlay.hide {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.3s ease, visibility 1.3s ease;
+}
+
+/* LOGO MÁS GRANDE (50% más como pediste) */
+#intro-logo {
+  width: 240px; /* antes 160px → ahora +50% */
+  transform-origin: center;
+
+  animation: logoCinema 3.2s cubic-bezier(.2,.8,.2,1) forwards;
+
+  /* glow más profesional */
+  filter:
+    drop-shadow(0 0 15px rgba(0,255,200,0.25))
+    drop-shadow(0 0 40px rgba(0,255,200,0.15));
+}
+
+/* efecto “aire cinematográfico” */
+#intro-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(circle at center, rgba(0,255,200,0.08), transparent 60%);
+
+  animation: pulseBg 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* animación del logo tipo streaming intro */
+@keyframes logoCinema {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+    filter: blur(12px);
+  }
+
+  35% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+
+  65% {
+    transform: scale(1.18);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* respiración del fondo */
+@keyframes pulseBg {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08);
+  }
+}
+
+/* prealoder del home- fin */
