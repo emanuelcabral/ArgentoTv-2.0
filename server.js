@@ -18,12 +18,7 @@ let lastUpdate = 0;
 const CACHE_TIME = 1000 * 60 * 30;
 
 const feeds = [
-  { url: "https://www.open-epg.com/files/argentina.xml", tag: "AR2" },
-  { url: "https://iptv-epg.org/files/epg-ar.xml", tag: "AR" },
-  { url: "https://iptv-epg.org/files/epg-cl.xml", tag: "CL" },
-  { url: "https://iptv-epg.org/files/epg-mx.xml", tag: "MX" },
-  { url: "https://iptv-epg.org/files/epg-es.xml", tag: "ES" },
-  { url: "https://iptv-epg.org/files/epg-bo.xml", tag: "BO" }
+  { url: "https://argentotv.up.railway.app/epg", tag: "AR" }
 ];
 
 // ⏱ FETCH CON TIMEOUT
