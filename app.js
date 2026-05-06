@@ -339,63 +339,7 @@ function renderChannels(data) {
 // -----------------------------
 // 🔥 PLAYER
 // -----------------------------
-function playChannel(channel) {
-  currentChannelIndex = channels.indexOf(channel);
 
-  if (hls) {
-    hls.destroy();
-    hls = null;
-  }
-
-  let video = document.getElementById('video');
-
-  if (!video) {
-    video = document.createElement("video");
-    video.id = "video";
-    video.controls = true;
-    video.autoplay = true;
-    player.prepend(video);
-  }
-
-if (channel.type === "youtube" || channel.url.includes("youtube")) {
-  const id = channel.url.match(/(?:youtu\.be\/|v=)([^&]+)/)?.[1];
-  if (!id) return;
-
-  player.innerHTML = `
-    <iframe width="100%" height="100%"
-    src="https://www.youtube.com/embed/${id}?autoplay=1"
-    allowfullscreen></iframe>
-  `;
-  return;
-}
-
-// 🔥 NUEVO: soporte iframe genérico
-if (channel.type === "iframe") {
-  player.innerHTML = `
-    <iframe 
-      width="100%" 
-      height="100%" 
-      src="${channel.url}"
-      frameborder="0"
-      allow="autoplay; encrypted-media; fullscreen"
-      allowfullscreen>
-    </iframe>
-  `;
-
-  showOverlay(channel);
-  return;
-}
-
-  if (window.Hls && Hls.isSupported()) {
-    hls = new Hls();
-    hls.loadSource(channel.url);
-    hls.attachMedia(video);
-  } else {
-    video.src = channel.url;
-  }
-
-  showOverlay(channel);
-}
 
 
 // -----------------------------
@@ -562,6 +506,7 @@ function startInternetSpeedTest() {
   netSpeedInterval = setInterval(measure, 2000);
 }
 
+
 function playChannel(channel) {
 
   currentChannelIndex = channels.indexOf(channel);
@@ -571,79 +516,115 @@ function playChannel(channel) {
     hls = null;
   }
 
-  showLoader(); // 🔥 SOLO al click
+  showLoader();
 
-  let video = document.getElementById('video');
+  // =========================
+  // LIMPIEZA SEGURA
+  // =========================
+  const oldVideo = document.getElementById("video");
+  const oldIframe = player.querySelector("iframe");
 
-  if (!video) {
-    video = document.createElement("video");
-    video.id = "video";
-    video.autoplay = true;
-    player.prepend(video);
+  if (oldVideo) oldVideo.remove();
+  if (oldIframe) oldIframe.remove();
+
+  const url = channel.url;
+
+  // =========================
+  // 🎬 YOUTUBE
+  // =========================
+  if (channel.type === "youtube" || url.includes("youtube")) {
+
+    const id = url.match(/(?:youtu\.be\/|v=|embed\/)([^&?/]+)/)?.[1];
+
+    const iframe = document.createElement("iframe");
+
+    iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&rel=0`;
+    iframe.allowFullscreen = true;
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+    iframe.style.border = "none";
+
+    player.appendChild(iframe);
+
+    hideLoader();
+    showOverlay(channel);
+    return;
   }
 
-  if (window.Hls && Hls.isSupported()) {
+  // =========================
+  // 🧩 IFRAME
+  // =========================
+  if (channel.type === "iframe") {
+
+    const iframe = document.createElement("iframe");
+
+    iframe.src = url;
+    iframe.allowFullscreen = true;
+
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+    iframe.style.border = "none";
+
+    player.appendChild(iframe);
+
+    hideLoader();
+    showOverlay(channel);
+    return;
+  }
+
+  // =========================
+  // 📺 VIDEO
+  // =========================
+  const video = document.createElement("video");
+
+  video.id = "video";
+  video.autoplay = true;
+  video.style.width = "100%";
+  video.style.height = "100%";
+
+  player.appendChild(video);
+
+  // =========================
+  // 🔥 HLS
+  // =========================
+  if (window.Hls && Hls.isSupported() && url.includes(".m3u8")) {
 
     hls = new Hls();
 
-hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+    hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
 
-  const level = hls.levels[data.level];
-  if (!level) return;
+      const level = hls.levels[data.level];
+      if (!level) return;
 
-  const resolution =
-  level.height && level.height > 0
-    ? level.height + "p"
-    : "AUTO";
-  let bitrateValue = level.bitrate;
+      const resolution = level.height ? level.height + "p" : "AUTO";
+      const bitrate = level.bitrate
+        ? (level.bitrate / 1000000).toFixed(2) + " Mbps"
+        : "AUTO";
 
-  let bitrate =
-    bitrateValue && bitrateValue > 0
-      ? (bitrateValue / 1000000).toFixed(2) + " Mbps"
-      : "AUTO / N/A";
-  const mode = hls.autoLevelEnabled ? "AUTO" : "MANUAL";
+      const mode = hls.autoLevelEnabled ? "AUTO" : "MANUAL";
 
-  // =========================
-  // OVERLAY (si está visible)
-  // =========================
-  const overlayRes = document.getElementById("overlay-resolution");
-  const overlayBit = document.getElementById("overlay-bitrate");
-  const overlayMode = document.getElementById("overlay-audio");
+      if (overlayRes) overlayRes.textContent = resolution;
+      if (overlayBit) overlayBit.textContent = bitrate;
+      if (overlayMode) overlayMode.textContent = mode;
 
-  if (overlayRes) overlayRes.textContent = resolution;
-  if (overlayBit) overlayBit.textContent = bitrate;
-  if (overlayMode) overlayMode.textContent = mode;
-
-  // =========================
-  // HUD (siempre visible)
-  // =========================
-  if (hudRes) hudRes.textContent = resolution;
-  if (hudBit) hudBit.textContent = bitrate;
-  if (hudMode) hudMode.textContent = mode;
-});
-
-    // 🔥 SOLO dejamos eventos básicos (SIN velocidad acá)
-    hls.on(Hls.Events.MANIFEST_PARSED, () => {
-      // no tocar loader acá
+      if (hudRes) hudRes.textContent = resolution;
+      if (hudBit) hudBit.textContent = bitrate;
+      if (hudMode) hudMode.textContent = mode;
     });
 
-    video.addEventListener("playing", () => {
-      hideLoader();
-    }, { once: true });
+    video.addEventListener("playing", () => hideLoader(), { once: true });
 
-    hls.loadSource(channel.url);
+    hls.loadSource(url);
     hls.attachMedia(video);
 
   } else {
 
-    video.src = channel.url;
-
+    video.src = url;
     video.onplaying = () => hideLoader();
   }
 
   showOverlay(channel);
 }
-
 //prealoader fin
 
 

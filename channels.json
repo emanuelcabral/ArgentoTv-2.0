@@ -380,7 +380,7 @@
   "epg_id": "CanalRural.ar"
 },
 { 
-  "name": "Hola TV", 
+  "name": "Hola TV - ok", 
   "url": "http://200.125.170.122:8000/play/a04k/index.m3u8", 
   "logo": "https://images.open-epg.com/16782343.png",
   "epg_id": "HolaTV.ar"
@@ -421,7 +421,7 @@
   "name": "Lifetime", 
   "url": "https://tv.topmediatv.net:25463/live/TopMediaWeb/bOteTR8ED1/84.m3u8", 
   "logo": "https://images.squarespace-cdn.com/content/v1/64b9f6423251ee5726047a6b/7ab61752-35f2-4f8e-8c46-b299b177bf3c/1.png?format=1000w",
-  "epg_id": "Lifetime.ar"
+  "epg_id": "Lifetime.cl"
 },
 
 { 
@@ -490,7 +490,7 @@
   "name": "kanal D Drama", 
   "url": "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01602-themahqfrance-vivekanald-samsungspain/playlist.m3u8", 
   "logo": "https://www.kanalddrama.com/images/logo.png",
-  "epg_id": "kanalddrama.ar"
+  "epg_id": "KANAL D DRAMA HD.cl"
 },
 
 {
@@ -573,7 +573,7 @@
   "name": "H&H Home and Health", 
   "url": "https://tv.topmediatv.net:25463/live/TopMediaWeb/bOteTR8ED1/12.m3u8", 
   "logo": "https://logodownload.org/wp-content/uploads/2020/06/discovery-home-and-health-logo-0.png",
-  "epg_id": "DiscoveryHomeAndHealth.ar"
+  "epg_id": "DISCOVERY HOME AND HEALTH.mx"
 },
 { 
   "name": "Discovery channel - ok", 
@@ -1186,7 +1186,7 @@
 
 { 
   "name": "Claro deportes", 
-  "epg_id": "ClaroSportsChile.cl",
+  "epg_id": "CLAROSPORTS.mx",
   "url": "https://tv.topmediatv.net:25463/live/TopMediaWeb/bOteTR8ED1/103.m3u8", 
   "logo": "https://yt3.googleusercontent.com/5H07wSUgtBIz7hY8rIqGfSdOS6XRrgB2s0bJb0zdjNBKwttmb-Y1GNrKtjHqUIo-Y7oRHUIcLg=s900-c-k-c0x00ffffff-no-rj" 
 },
@@ -1371,7 +1371,7 @@
 
 { 
   "name": "Teen Nick", 
-  "epg_id": "TeenNickGlobalLatinAmerica/Pan-regional.ec", 
+  "epg_id": "Teen Nick.cl", 
   "url": "https://tv.topmediatv.net:25463/live/TopMediaWeb/bOteTR8ED1/399.m3u8", 
   "logo": "https://static.wikia.nocookie.net/nickelodeon/images/d/da/TeenNick_Splat_2023.svg/revision/latest/scale-to-width-down/1200?cb=20240904132305" 
 },
@@ -1845,7 +1845,7 @@
 },
 
 { 
-  "name": "Sony movies - funciona", 
+  "name": "Sony movies - funciona ok", 
   "url": "http://visuales.xyz:80/live/espanistv/uNUP5XEj7SBB/440741.m3u8", 
   "logo": "https://bb-media.com/wp-content/uploads/2025/04/1200px-Sony_Movies_Logo.svg_.png",
   "epg_id": "SonyMovies.ar"
@@ -1854,7 +1854,7 @@
   "name": "Sony movies - funciona", 
   "url": "http://visuales.xyz:80/live/tr9FPcWPeWy8/W28Lsh5kkqwG/440741.m3u8", 
   "logo": "https://bb-media.com/wp-content/uploads/2025/04/1200px-Sony_Movies_Logo.svg_.png",
-  "epg_id": "SonyMoviesLatinAmerica.us"
+  "epg_id": "SonyMovies.ar"
 },
 
 { 
@@ -2048,7 +2048,7 @@
 },
 
 { 
-  "name": "De pelicula", 
+  "name": "De pelicula - ok", 
   "epg_id": "DePelícula.mx",
   "url": "https://tv.topmediatv.net:25463/live/TopMediaWeb/bOteTR8ED1/18.m3u8", 
   "logo": "https://upload.wikimedia.org/wikipedia/commons/3/30/De_Pel%C3%ADcula_Cl%C3%A1sico.png" 
@@ -2185,19 +2185,19 @@
 
 { 
   "name": "Universal crime - ok", 
-  "epg_id": "UniversalCrime.mx",
+  "epg_id": "UNIVERSAL CRIME.mx",
   "url": "http://liketv.pro/live/federicosala@gmail.com/GwXxyebEf5/17629.m3u8", 
   "logo": "https://static.wikia.nocookie.net/logopedia/images/e/ed/Universal_Crime.svg/revision/latest/scale-to-width-down/250?cb=20220311032018" 
 },
 { 
   "name": "Universal crime - ", 
-  "epg_id": "UniversalCrime.ar",
+  "epg_id": "UNIVERSAL CRIME.mx",
   "url": "https://tv.topmediatv.net:25463/live/TopMediaWeb/bOteTR8ED1/365.m3u8", 
   "logo": "https://static.wikia.nocookie.net/logopedia/images/e/ed/Universal_Crime.svg/revision/latest/scale-to-width-down/250?cb=20220311032018" 
 },
 { 
   "name": "Universal crime - ", 
-  "epg_id": "UniversalCrime.ar",
+  "epg_id": "UNIVERSAL CRIME.mx",
   "url": "http://200.125.170.122:8000/play/a04r/index.m3u8", 
   "logo": "https://static.wikia.nocookie.net/logopedia/images/e/ed/Universal_Crime.svg/revision/latest/scale-to-width-down/250?cb=20220311032018" 
 },

@@ -4,6 +4,8 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "@capacitor/cli": "^8.3.1",
+    "@capacitor/core": "^8.3.1",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "fast-xml-parser": "^5.7.2",
