@@ -40,6 +40,7 @@ html {
 
 body {
   font-family: Arial, sans-serif;
+  background-color: yellow;
   background-image: url(fondo.svg);
   background-size: cover;
   background-repeat: no-repeat;
@@ -476,3 +477,8 @@ input[type="range"] { width: 100px; }
 }
 
 /* prealoder del home- fin */
+
+.focused {
+  border: 2px solid #19f0d8;
+  box-shadow: 0 0 10px #19f0d8;
+}

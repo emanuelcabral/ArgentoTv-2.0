@@ -29,6 +29,9 @@ const hudSpeed = document.getElementById("hud-speed");
 const hudQuality = document.getElementById("hud-quality");
 // datos fijos fin
 
+let focusZone = "list"; // list | player | search | controls
+let channelElements = [];
+
 
 // 🔥 EPG URL
 // const EPG_URL = "https://iptv-epg.org/files/epg-ar.xml";
@@ -278,31 +281,35 @@ if (hudMode) hudMode.textContent = initialMode;
 
 
 // -----------------------------
-// 🔥 RENDER
+// 🔥 RENDER (ANDROID TV READY)
 // -----------------------------
 function renderChannels(data) {
+
   list.innerHTML = '';
 
   if (!data || data.length === 0) {
     list.innerHTML = "<p>No hay canales</p>";
+    channelElements = [];
+    currentChannelIndex = 0;
+    updateFocus();
     return;
   }
 
-  data.forEach(channel => {
+  // 🔥 reset de elementos
+  channelElements = [];
+
+  data.forEach((channel, index) => {
+
     const div = document.createElement('div');
     div.className = 'channel';
+
+    // 🔥 guardar referencia para navegación TV
+    channelElements.push(div);
 
     const epgList = getEPG(channel);
     const current = getCurrentProgram(epgList);
 
-    console.log(
-      "CANAL:", channel.name,
-      "| epg_id:", channel.epg_id,
-      "| EPG:", epgList?.length,
-      "| CURRENT:", current
-    );
-
-    let epgText = "Sin informacion";
+    let epgText = "Sin información";
 
     if (epgList && current?.title) {
       epgText = current.title;
@@ -310,7 +317,7 @@ function renderChannels(data) {
       epgText = "Sin programa actual";
     }
 
-    // 🔥 IMG FIX
+    // 🔥 IMG
     const img = document.createElement("img");
     img.src = channel.logo || "https://via.placeholder.com/40";
     img.referrerPolicy = "no-referrer";
@@ -322,7 +329,7 @@ function renderChannels(data) {
     const info = document.createElement("div");
     info.innerHTML = `
       <span>${channel.name}</span>
-      <small style="display:block;color:${epgList ? '#00ef03' : ''};">
+      <small style="display:block;color:${epgList ? '#00ef03' : '#aaa'};">
         ${epgText}
       </small>
     `;
@@ -330,16 +337,96 @@ function renderChannels(data) {
     div.appendChild(img);
     div.appendChild(info);
 
-    div.onclick = () => playChannel(channel);
+    // =========================
+    // 🎯 CLICK / ENTER ACTION
+    // =========================
+    div.onclick = () => {
+      currentChannelIndex = index;
+      updateFocus();
+      playChannel(channel);
+      focusZone = "player";
+    };
 
     list.appendChild(div);
   });
+
+  // =========================
+  // 🔥 NO reset agresivo (IMPORTANTE)
+  // =========================
+  if (currentChannelIndex >= channelElements.length) {
+    currentChannelIndex = 0;
+  }
+
+  // 🔥 mantener foco consistente
+  requestAnimationFrame(() => {
+    updateFocus();
+  });
 }
-
 // -----------------------------
-// 🔥 PLAYER
+// 🔥 nueva modificacion para adaptar a android tv
 // -----------------------------
+function updateFocus() {
 
+  // =========================
+  // 🔥 LIMPIAR TODO FOCO
+  // =========================
+  document.querySelectorAll(".focused").forEach(el => {
+    el.classList.remove("focused");
+  });
+
+  // =========================
+  // 📺 LISTA DE CANALES
+  // =========================
+  if (focusZone === "list") {
+
+    if (!channelElements.length) return;
+
+    const el = channelElements[currentChannelIndex];
+
+    if (el) {
+      el.classList.add("focused");
+
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+    }
+
+    return;
+  }
+
+  // =========================
+  // 🔍 SEARCH BAR
+  // =========================
+  if (focusZone === "search") {
+    if (search) {
+      search.classList.add("focused");
+      search.focus();
+    }
+    return;
+  }
+
+  // =========================
+  // 📺 PLAYER
+  // =========================
+  if (focusZone === "player") {
+    if (player) {
+      player.classList.add("focused");
+    }
+    return;
+  }
+
+  // =========================
+  // ⚙ CONTROLES (HUD / TOGGLES)
+  // =========================
+  if (focusZone === "controls") {
+    const hudControls = document.getElementById("hud-controls");
+    if (hudControls) {
+      hudControls.classList.add("focused");
+    }
+    return;
+  }
+}
 
 
 // -----------------------------
@@ -348,23 +435,99 @@ function renderChannels(data) {
 document.addEventListener("keydown", (e) => {
   if (!channels.length) return;
 
-  if (e.key === "ArrowUp") {
-    currentChannelIndex =
-      (currentChannelIndex - 1 + channels.length) % channels.length;
-    showOverlay(channels[currentChannelIndex]);
-  }
+  switch (e.key) {
 
-  if (e.key === "ArrowDown") {
-    currentChannelIndex =
-      (currentChannelIndex + 1) % channels.length;
-    showOverlay(channels[currentChannelIndex]);
-  }
+    // =====================
+    // 🔼 LISTA CANALES
+    // =====================
+    case "ArrowUp":
+      if (focusZone === "list") {
+        currentChannelIndex =
+          (currentChannelIndex - 1 + channelElements.length) % channelElements.length;
 
-  if (e.key === "Enter") {
-    playChannel(channels[currentChannelIndex]);
+        updateFocus();
+        showOverlay(channels[currentChannelIndex]);
+      }
+      break;
+
+    case "ArrowDown":
+      if (focusZone === "list") {
+        currentChannelIndex =
+          (currentChannelIndex + 1) % channelElements.length;
+
+        updateFocus();
+        showOverlay(channels[currentChannelIndex]);
+      }
+      break;
+
+    // =====================
+    // ➡️ MOVER A PLAYER
+    // =====================
+    case "ArrowRight":
+
+      if (focusZone === "list") {
+        focusZone = "player";
+        updateFocus();
+      }
+
+      else if (focusZone === "search") {
+        focusZone = "list";
+        updateFocus();
+      }
+
+      break;
+
+    // =====================
+    // ⬅️ VOLVER A LISTA
+    // =====================
+    case "ArrowLeft":
+
+      if (focusZone === "player") {
+        focusZone = "list";
+        updateFocus();
+      }
+
+      break;
+
+    // =====================
+    // ⏎ ENTER
+    // =====================
+    case "Enter":
+
+      if (focusZone === "list") {
+        // 🔥 cambia canal
+        playChannel(channels[currentChannelIndex]);
+      }
+
+      else if (focusZone === "player") {
+        // 🔥 fullscreen directo (lo que querías)
+        if (!document.fullscreenElement) {
+          player.requestFullscreen();
+        } else {
+          document.exitFullscreen();
+        }
+      }
+
+      break;
+
+    // =====================
+    // 🔙 BACK (TV CONTROL)
+    // =====================
+    case "Backspace":
+    case "Escape":
+
+      if (focusZone === "player") {
+        focusZone = "list";
+        updateFocus();
+      }
+
+      else if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+
+      break;
   }
 });
-
 
 // -----------------------------
 // 🔥 FULLSCREEN

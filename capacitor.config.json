@@ -1,8 +1,9 @@
 {
   "appId": "com.argentotv.app",
-  "appName": "ArgentoTv-2.0",
-  "webDir": "www",
+  "appName": "ArgentoTV-2.0",
+  "webDir": "public",
   "server": {
-    "url": "https://argentotv-2.up.railway.app"
+    "url": "https://argentotv-2.up.railway.app",
+    "cleartext": false
   }
 }
